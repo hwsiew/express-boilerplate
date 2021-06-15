@@ -1,0 +1,27 @@
+version: "3.7"
+
+services: 
+  express:
+    container_name: express
+    build: 
+      context: .
+    ports: 
+      - ${EXPRESS_PORT}:${EXPRESS_PORT}
+    environment: 
+      - MONGO_USER=${MONGO_USER}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - PORT=${EXPRESS_PORT}
+    depends_on: 
+      - mongodb
+
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongodb:/data/db 
+
+volumes: 
+  mongodb:
