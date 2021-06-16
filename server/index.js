@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const routes = require('./routes');
 
 const MONGO_USER = process.env.MONGO_USER || 'root';
 const MONGO_PSWD = process.env.MONGO_PASSWORD || 'root';
@@ -10,10 +11,14 @@ const EXPRESS_PORT = process.env.PORT || 3000;
 
 const app 	= express();
 
+app.use(express.json());		// to support json-encoded body, e.g. {"name":"foo", "age": 23}
+app.use(express.urlencoded()); 	// to support URL-encoded body, e.g. name=foo&age=23
+
 app.get('/', (req, res) => {
 	res.send('Hello World!');
 });
 
+app.use('/api/v1',routes.api);
 
 var connectMongoDB = function(){
 	const mongooseUri = `mongodb://${MONGO_USER}:${MONGO_PSWD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
