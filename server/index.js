@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require('express');
 const routes = require('./routes');
 const passport = require('passport');
@@ -15,6 +16,9 @@ require('./config/session')(app); // this must go before passport.session() and 
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Static assect route to public folder
+app.use('/static', express.static(path.join(__dirname,'public')));
 
 app.get('/', (req, res) => {
 	res.send('Hello World! <a href="/auth/login"> Login </a>');
