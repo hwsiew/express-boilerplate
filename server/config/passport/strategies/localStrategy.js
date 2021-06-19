@@ -1,5 +1,4 @@
-const passport = require('passport');
-const { User } = require('../models');
+const { User } = require('../../../models');
 const LocalStrategy = require('passport-local').Strategy;
 
 // this set the field name passport is looking for from the request depending on your form field name
@@ -28,16 +27,6 @@ const verifyCallback = function(username, password, done){
 
 };
 
-const strategy = new LocalStrategy(customFields, verifyCallback);
+const localStrategy = new LocalStrategy(customFields, verifyCallback);
 
-passport.use(strategy);
-
-passport.serializeUser(function(user, done) {
-	done(null, user.id);
-  });
-  
-passport.deserializeUser(function(id, done) {
-	User.findById(id, function(err, user) {
-		done(err, user);
-	});
-});
+module.exports = localStrategy;
