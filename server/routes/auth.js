@@ -34,6 +34,49 @@ router.route('/login')
 		failureRedirect: '/auth/login?message=failed&type=error',
 	}));
 
+/**
+ * /auth/verify:
+ * 	post:
+ * 		summary: verify user with username and password
+ * 		description: verification of user with username and password and return jwt token if success
+ * 		requestBody:
+ * 			required: true
+ * 			content: 
+ * 				application/json:
+ * 					schema:
+ * 						type: object
+ * 						properties:
+ * 							username:
+ * 								type: string
+ * 							password:
+ * 								type: string
+ * 		responses:
+ * 			200:
+ * 				description: authentication success
+ * 				content:
+ * 					application/json:
+ * 						scheme:
+ * 							type: object
+ * 							properties:
+ * 								success:
+ * 									type: boolean
+ * 								token:
+ * 									type: string
+ *			401:
+ * 				description: authentication fail
+ *				content:
+ *					application/json:
+ * 						scheme:
+ * 							type: object
+ * 							properties:
+ * 								success:
+ * 									type: boolean
+ * 								error:
+ * 									type: string
+ */
+router.route('/verify')
+	.post(userController.verify);
+
 router.route('/register')
 	.get((req,res) => {
 		res.send(
