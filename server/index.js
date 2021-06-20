@@ -26,7 +26,9 @@ app.get('/', (req, res) => {
 
 app.use('/auth', routes.auth);
 app.use('/dashboard', routes.dashboard);
-app.use('/api/v1', routes.api);
+// API routes which are required jwt authorization
+// It is require on every request so session is disabled.
+app.use('/api/v1', passport.authenticate('jwt',{session: false}), routes.api);
 
 // start listening at designated port when db is ready
 app.on('ready', () => {

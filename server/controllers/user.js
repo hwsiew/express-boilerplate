@@ -1,5 +1,15 @@
 const { User } = require('../models/index');
+const jwt = require('jsonwebtoken');
 
+const jwtSecret = process.env.JWT_SECRET || 'secret';
+const jwtIssuer = process.env.JWT_ISSUER || 'example.com';
+const jwtAudience = process.env.JWT_AUDIENCE || 'yoursite.net';
+
+/**
+ * Route handler to create an user
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 const create = function(req, res){
 
 	let username = req.body.username;
@@ -34,6 +44,36 @@ const create = function(req, res){
 
 };
 
+/**
+ * Route handler to verify user authentication 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
+const verify = function(req, res){
+
+	const { username, password } = req.body;
+
+	User.findOne({ username })
+		.then(user => {
+
+			if(!user || !user.validatePassword(password)) 
+				throw 'Incorrect username or password!';	
+
+			let jwtToken = jwt.sign({
+				iss: jwtIssuer,
+				aud: jwtAudience,
+				sub: user._id,
+				exp: Math.floor(Date.now() / 1000) + (60 * 60),
+			}, jwtSecret);
+
+			res.json({ success: true, token: jwtToken });
+
+		})
+		.catch(err => {console.log(err);res.status('401').json({error: err})});
+
+}
+
 module.exports = {
 	create,
+	verify
 }
