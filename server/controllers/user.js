@@ -18,13 +18,12 @@ const create = function(req, res){
 	User.find({ $or: [ {username} , {email} ] }, function(err, users){
 
 		if(err){
-			res.send(err);
-			console.log(err);
+			res.redirect(`/auth/register?type=error&message=${encodeURIComponent(err)}`);
 			return
 		}
 
 		if(users.length !== 0) {
-			res.send('User already exist!');
+			res.redirect(`/auth/register?type=error&message=${encodeURIComponent('User already existed!')}`);
 			return;
 		}
 		
@@ -37,7 +36,6 @@ const create = function(req, res){
 
 		newUser.save((err,_user)=>{
 			if (err) return console.error(err);
-			console.log(_user.username);
 			res.send('Plese check your email to verify your account.');
 		});
 	});

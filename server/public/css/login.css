@@ -78,6 +78,11 @@ input[type=submit]:hover {
 	background-color: #45a049;
 }
 
+input[type=submit]:disabled{
+	background-color: grey;
+	cursor: inherit;
+}
+
 .no-account{
 	font-size: 10pt;
 }
