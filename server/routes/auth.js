@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const passport = require('passport');
 const { userController } = require('../controllers');
@@ -8,30 +9,15 @@ router.route('/login')
 	.get((req, res) => {
 
 		if(req.isAuthenticated()) return res.redirect('/dashboard');
-		
-		res.send(
-			`
-			<h1>login</h1>
-			<form action="/auth/login" method="post">
-				<div>
-					<label>Username:</label>
-					<input type="text" name="username"/>
-				</div>
-				<div>
-					<label>Password:</label>
-					<input type="password" name="password"/>
-				</div>
-				<div>
-					<input type="submit" value="Log In"/>
-				</div>
-			</form>
-			<p> No account yet? <a href="/auth/register"> Register </a></p>
-			`
-		);
+
+		res.sendFile('login.html',{
+			root: path.join(__dirname,'..','public/html'),
+		});
+
 	})
 	.post(passport.authenticate('local', { 
 		successRedirect: '/dashboard',
-		failureRedirect: '/auth/login?message=failed&type=error',
+		failureRedirect: `/auth/login?message=${encodeURIComponent('Incorrect username or password!')}&type=error`,
 	}));
 
 /**
