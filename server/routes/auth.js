@@ -65,28 +65,13 @@ router.route('/verify')
 
 router.route('/register')
 	.get((req,res) => {
-		res.send(
-			`
-			<h1>Register</h1>
-			<form action="/auth/register" method="post">
-				<div>
-					<label>Username:</label>
-					<input type="text" name="username"/>
-				</div>
-				<div>
-					<label>Email:</label>
-					<input type="text" name="email"/>
-				</div>
-				<div>
-					<label>Password:</label>
-					<input type="password" name="password"/>
-				</div>
-				<div>
-					<input type="submit" value="Register"/>
-				</div>
-			</form>
-			`
-		);
+
+		if(req.isAuthenticated()) return res.redirect('/dashboard');
+
+		res.sendFile('register.html',{
+			root: path.join(__dirname,'..','public/html'),
+		});
+
 	})
 	.post(userController.create);
 
