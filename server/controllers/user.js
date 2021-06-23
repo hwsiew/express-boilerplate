@@ -36,7 +36,8 @@ const create = function(req, res){
 
 		newUser.save((err,_user)=>{
 			if (err) return console.error(err);
-			res.send('Plese check your email to verify your account.');
+			let message = 'Plese check your email to verify your account.';
+			res.redirect(`/auth/register?type=success&message=${encodeURIComponent(message)}`);
 		});
 	});
 
