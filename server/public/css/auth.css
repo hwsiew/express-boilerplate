@@ -30,6 +30,7 @@ html, body {
 	padding: 10px;
 	margin-bottom: 10px;
 	font-size: 10pt;
+	border-radius: 5px;
 }
 
 .alert.hide {
@@ -40,7 +41,19 @@ html, body {
 	background-color: #f2dede;
 	color: #a94442;
 	border-color: #f2dede;
-	border-radius: 5px;
+	
+}
+
+.alert.success {
+	background-color: #dff0d8;
+	color: #3c763d;
+	border-color: #d6e9c6;
+}
+
+.alert.info {
+	color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
 }
 
 .closebtn {
