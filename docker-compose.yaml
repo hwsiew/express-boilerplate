@@ -12,6 +12,9 @@ services:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
       - PORT=${EXPRESS_PORT}
       - SESSION_SECRET=${SESSION_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_AUDIENCE=${JWT_AUDIENCE}
     depends_on: 
       - mongodb
 
