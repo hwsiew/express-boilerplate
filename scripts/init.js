@@ -6,6 +6,10 @@
  * 	MONGO_USER		- MongoDB username
  * 	MONGO_PASSWORD	- MongoDB password
  * 	MONGO_DATABASE	- Database name to connect in MongoDB
+ *  SESSION_SECRET  - Session secret for hashing
+ *  JWT_SECRET		- JWT secret for hashing
+ *  JWT_ISSUER		- JWT issuer claim 
+ *  JWT_AUDIENCE	- JWT audience claim
  */
  const fs 	   	= require('fs');
  const readline = require("readline");
@@ -16,43 +20,81 @@
  
  // to get the existing .env file if any
  require('dotenv').config();
- 
- // this will set default to exisiting value if .env file exist
- let default_express_port = process.env.EXPRESS_PORT || 3000,
-	 default_mongodb_user = process.env.MONGO_USER || 'mongoUserDefault',
-	 default_mongodb_password = process.env.MONGO_PASSWORD || 'mongoPasswordDefault',
-	 default_mongodb_database = process.env.MONGO_DATABASE || ''
-	 default_session_secret = process.env.SESSION_SECRET || 'change_to_something_secure';
- 
- rl.question(`Express port? (default: ${default_express_port})`, express_port => {
-	rl.question(`MongoDB username? (default: ${default_mongodb_user})`, mongo_user => {
-		rl.question(`MongoDB password? (default: ${default_mongodb_password})`, mongo_password => {
-			rl.question(`MongoDB name of database to connect? (default: ${default_mongodb_database})`, mongo_database => {
-				rl.question(`Session secret, if any? (default: ${default_session_secret})`, session_secret => {
 
-					express_port = express_port || default_express_port;
-					mongo_user   = mongo_user   || default_mongodb_user;
-					mongo_password = mongo_password || default_mongodb_password;
-					mongo_database = mongo_database || default_mongodb_database;
-					session_secret = session_secret || default_session_secret;
-	
-					let content = `EXPRESS_PORT=${express_port}\n`;
-					content += `MONGO_USER=${mongo_user}\n`;
-					content += `MONGO_PASSWORD=${mongo_password}\n`;
-					content += `MONGO_DATABASE=${mongo_database}\n`;
-					content += `SESSION_SECRET=${session_secret}`;
-	
-					fs.writeFileSync('.env', content);
-	
-					rl.close();
+ // define all question here with the env variable name as key
+ let questions = [
+	{
+		question: 'Express port?',
+		key: 'EXPRESS_PORT'
+	}, 
+	{
+		question: 'MongoDB username?',
+		key: 'MONGO_USER'
+	},
+	{
+		question: 'MongoDB password?',
+		key: 'MONGO_PASSWORD'
+	},
+	{
+		question: 'MongoDB database to connect?',
+		key: 'MONGO_DATABASE'
+	},
+	{
+		question: 'Session secret, if any?',
+		key: 'SESSION_SECRET'
+	},
+	{
+		question: 'JWT secret, if any?',
+		key: 'JWT_SECRET'
+	},
+	{
+		question: 'JWT issuer, if any?',
+		key: 'JWT_ISSUER'
+	},
+	{
+		question: 'JWT audience, if any?',
+		key: 'JWT_AUDIENCE'
+	},
+ ];
 
-				});
-			 });
-		 });
-	 });
- });
- 
- rl.on("close", function() {
-	 console.log("\nIt is all set! Enjoy development");
-	 process.exit(0);
- });
+ // default value which will be overrided if provide
+ let answers = {
+	'EXPRESS_PORT'	: process.env.EXPRESS_PORT || 3000,
+	'MONGO_USER'	: process.env.MONGO_USER || 'mongoUserDefault',
+	'MONGO_PASSWORD': process.env.MONGO_PASSWORD || 'mongoPasswordDefault',
+	'MONGO_DATABASE': process.env.MONGO_DATABASE || '',
+	'SESSION_SECRET': process.env.SESSION_SECRET || 'change_to_something_secure',
+	'JWT_SECRET'	: process.env.JWT_ISSUER || 'secret',
+	'JWT_ISSUER'	: process.env.JWT_SECRET || 'example.com',
+	'JWT_AUDIENCE' 	: process.env.JWT_AUDIENCE || 'yoursite.net',
+ }
+
+ // async function to ask question and update answers
+ async function ask(){
+	try{
+
+		for(let q of questions){
+			answers[q.key] = await new Promise( resolve => {
+				rl.question(`${q.question} (default: ${answers[q.key]}) `, answer => resolve(answer || answers[q.key]) )
+			});;
+		}
+		
+		let content = '';
+		for(const [key,value] of Object.entries(answers)){
+			content += `${key}=${value}\n`;
+		}
+		fs.writeFileSync('.env', content);
+
+		rl.close();
+	} catch(err) {
+		console.log('Question rejected', err);
+	}
+	
+ };
+
+rl.on("close", function() {
+	console.log("\nIt is all set! Enjoy development");	 
+	process.exit(0);
+});
+
+ask(); // ask the questions
