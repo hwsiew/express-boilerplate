@@ -2,11 +2,9 @@
   "name": "express-boilerplate",
   "version": "1.0.0",
   "description": "Spin off your application development right away with the necessary function you need.",
-  "main": "index.js",
+  "workspaces": ["./services/*"],
   "scripts": {
     "init": "node ./scripts/init.js",
-    "start": "node ./server/index.js",
-    "start:dev": "nodemon -L ./server/index.js",
     "docker:up": "docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d",
     "docker:up:dev": "docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d",
     "docker:down": "docker-compose down",
@@ -15,19 +13,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "connect-mongo": "^4.4.1",
-    "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "http-errors": "^1.7.2",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.13",
-    "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "dotenv": "^10.0.0",
-    "nodemon": "^2.0.7"
+    "dotenv": "^10.0.0"
   }
 }
