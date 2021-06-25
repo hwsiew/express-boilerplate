@@ -33,16 +33,20 @@ app.use('/dashboard', routes.dashboard);
 // It is require on every request so session is disabled.
 app.use('/api/v1', passport.authenticate('jwt',{session: false}), routes.api);
 
-// catch 404 and forward to error handler
+// catch 404 
 app.use(function(req, res, next) {
-	// when next with argument other then 'route' value is called
-	// all routes other than error handling middleware will be skipped
-	next(createError(404, 'Page not found!', {/* custom value can add here */})); 
+	res.sendFile('404.html',{
+		root: path.join(__dirname,'public/html'),
+	});
 });
 
 // Error Handling
 // function signature must have 4 parameters even if you don't use next.
 app.use(function(err,req,res,next){
+	// use next as follow to be captured by this error handler
+	// next(createError(404, 'Page not found!', {/* custom value can add here */})); 
+	// when next with argument other then 'route' value is called
+	// all routes other than error handling middleware will be skipped
 	res.status(err.status || 500);
 	res.send(err.message || 'Error encountered!');
 })
