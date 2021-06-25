@@ -1,30 +1,59 @@
 # ExpressJS Boilerplate
-Spin off your application development right away with the necessary function you need.
+Scaffold an express app development right away with popular toolchain ready.
 
 ## Technology Stack
 - NodeJS
 - ExpressJS
 - MongoDB
+- PassportJS
+- Docker
 
 ## Features
 - Persistent Database using MongoDB
 - Local Authentication using username and password
+- JWT Authentication using username and password
 - API route
+- Dockerized environment for development and production
 
-## How to
-1. `npm run init` to create a .env environment file. It is safe to regenerate same file with different value if necessary.
-2. Start docker containers
+## Prerequisites
+- Install [NodeJS](https://nodejs.org/en/download/)
+- Install Docker
+	- [Mac](https://docs.docker.com/docker-for-mac/install/)
+	- [Window](https://docs.docker.com/docker-for-windows/install/)
+	- [Linux](https://docs.docker.com/engine/install/centos/)
+
+## Get Started
+This assuemes you have all the prerequisites ready.
+1. `npm install` require packages.
+2. `npm run init` to create a .env environment file. It is safe to regenerate same file with different value if necessary.
+3. Start docker containers
 	- Development mode: `npm run docker:up:dev`
 	- Production mode: `npm run docker:up`
-	- to build the Dockerfile with booting up append `-- --build`
-3. Stop docker containers `npm run docker:down`
+	- to build the Dockerfile while booting up append `-- --build`
+4. Stop docker containers `npm run docker:down`
 
 ## Folder Structures
-* `scripts/ `: this is where the npm run scripts live 
-* `docker-compose.* `: docker compose config file for various environment
-* `Dockerfil `: docker image to build
-* `server/ `: this is where all the backend related code live
+```
+.
+|__ scripts  				# where npm run scripts live
+|__ docker-compose.*  		# docker config file for various environments
+|__ Dockerfile 				# docker image to build
+|__ services 				# workspaces 
+|	|__ server 
+|		|__ config	 		# general express app configuration, e.g. database, session, authorization
+|		|__ passport 		# various strategise of PasswportJS
+|		|__ controllers 	# controllers directory
+|		|__	models			# models directory
+|		|__ public			# static assets directory
+|			|__ html 		# replace login and register page template here
+|		|__ routes			# routes directory
+|__
+```
 
 ## TODO
 - [ ] 404 page
-- [ ] static asssets
+- [ ] Third party authorization, e.g. Facebook & Google
+- [ ] Deployment strategies  
+- [x] static asssets
+- [x] Login Page
+- [x] Registration Page
