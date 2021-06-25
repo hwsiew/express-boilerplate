@@ -14,6 +14,7 @@ Scaffold an express app development right away with popular toolchain ready.
 - JWT Authentication using username and password
 - API route
 - Dockerized environment for development and production
+- 404 page
 
 ## Prerequisites
 - Install [NodeJS](https://nodejs.org/en/download/)
@@ -51,9 +52,9 @@ This assuemes you have all the prerequisites ready.
 ```
 
 ## TODO
-- [ ] 404 page
 - [ ] Third party authorization, e.g. Facebook & Google
 - [ ] Deployment strategies  
 - [x] static asssets
 - [x] Login Page
 - [x] Registration Page
+- [x] 404 page
